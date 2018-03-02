@@ -8,7 +8,7 @@ try:
 except ImportError:
 	from distutils.core import setup
 
-os.listdir(os.path.join('lexc2dict'))
+os.listdir(os.path.join('lexc2dix'))
 
 if sys.argv[-1] == 'setup.py':
     print('To install, run \'python setup.py install\'')

@@ -8,10 +8,10 @@ __version__ = major + '.' + minor
 
 __date__ = '2018-03-01'  ## YYYY-MM-DD
 
-__description__ = 'Project description'
+__description__ = 'The python module for converting lexc to dix files'
 
 __author__ = 'Abinash Senapati(@Techievena)'
 __email__ = 'techievena@users.sourceforge.net'
 
-__url__= 'project url'
-__download_url__ = 'url to download the project'
+__url__= 'https://github.com/Techievena/lexc2dix'
+__download_url__ = 'https://github.com/Techievena/lexc2dix/archive/master.zip'
