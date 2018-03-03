@@ -1,4 +1,3 @@
-
 import sys
 from nose.tools import *
 import lexc2dix
