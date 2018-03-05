@@ -3,3 +3,9 @@ __pycache__
 .coverage
 *.sublime-project
 *.sublime-workspace
+*.py.orig
+.DS_STORE
+.cache
+dist/
+*.egg-info/
+.idea

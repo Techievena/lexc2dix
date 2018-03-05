@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import sys
@@ -7,6 +7,8 @@ try:
 	from setuptools import setup
 except ImportError:
 	from distutils.core import setup
+from setuptools import find_packages, setup
+from lexc2dix import release
 
 os.listdir(os.path.join('lexc2dix'))
 
@@ -14,7 +16,12 @@ if sys.argv[-1] == 'setup.py':
     print('To install, run \'python setup.py install\'')
     print()
 
-from lexc2dix import release
+with open('requirements.txt') as requirements:
+    required = requirements.read().splitlines()
+with open('test-requirements.txt') as requirements:
+    test_required = requirements.read().splitlines()
+with open("README.md") as readme:
+    long_description = readme.read()
 
 if __name__ == "__main__":
     setup(
@@ -26,15 +33,15 @@ if __name__ == "__main__":
         url = release.__url__,
         download_url = release.__download_url__,
         keywords= ['lexc', 'twolc', 'monodix'],
-        packages = ['lexc2dix'],
+        packages=find_packages(exclude=["build.*", "tests", "tests.*"]),
+        install_requires=required,
+        tests_require=test_required,
+        long_description=long_description,
         scripts = ['bin/lexc2dix_api'],
         license = 'GNU GENERAL PUBLIC LICENSE',
         entry_points = {
             'console_scripts': [
             'lexc2dix = lexc2dix_api:main'
             ]
-        },
-        install_requires = ['nose'],
-        test_suite = 'nose.collector',
-        tests_require = ['nose>=0.10.1']
+        }
     )
