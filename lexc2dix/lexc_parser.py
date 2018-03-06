@@ -22,21 +22,37 @@ def multichar_symbols_parser(multichar_symbols):
 	"""The module to parse Multichar_symbols section"""
 	m_s_dict = {}
 	m_s_dict[multichar_symbols.split('\n', 1)[0]] = multichar_symbols.split('\n', 1)[1]
+	multichar_symbols_formatter(m_s_dict)
 
 def lexicons_parser(lexicons):
 	"""The module to parse Lexicons section"""
 	l_p_dict = {}
 	for lexicon in lexicons:
 		l_p_dict[lexicon.split('\n', 1)[0].split()[1]] = lexicon.split('\n', 1)[1]
+	root_lexicon_formatter(l_p_dict)
 
 def multichar_symbols_formatter(multichar_symbols):
 	"""The module to process Multichar_symbols section"""
+	m_s_dict = {}
+	for line in multichar_symbols['Multichar Symbols'].splitlines():
+		try:
+			m_s_dict[line.split('!')[0].strip().lstrip('%<').rstrip('%>')] = line.split('!')[1].strip()
+		except IndexError:
+			m_s_dict[line.split('!')[0].strip().lstrip('%<').rstrip('%>')] = ''
+
+	return m_s_dict
 
 def root_lexicon_formatter(root_lexicon):
 	"""The module to process LEXICON Root section"""
+	r_l_dict = {}
+	for line in root_lexicon['Root'].splitlines():
+		r_l_dict[line.split()[-2]] = root_lexicon[line.split()[-2]]
+		del root_lexicon[line.split()[-2]]
+		other_lexicons_formatter(root_lexicon)
 
 def other_lexicons_formatter(other_lexicons):
 	"""The module to parse other LEXICON sections"""
+	l_dict = {}
 
 if __name__ == '__main__':
 	main()
