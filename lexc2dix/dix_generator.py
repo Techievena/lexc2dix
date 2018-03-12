@@ -1,17 +1,26 @@
-import dicttoxml
+from dicttoxml import dicttoxml
+from py2xml.serializer import Py2XML
+from xml.dom.minidom import parseString
 
 def main():
 	sdefs_module_generator()
 
-def sdefs_module_generator():
+def sdefs_module_generator(multichar_symbols_dict = {}):
 	"""The module to generate <sdefs> section"""
-	print("Sdefs module")
+	m_s_list = []
+	m_s_dict = {'sdefs':m_s_list}
+	for key, value in multichar_symbols_dict.items():
+		n_dict = {'c': value, 'n': key}
+		m_s_list.append(n_dict)
+	serializer = Py2XML()
+	sdef_module = serializer.parse(m_s_dict)
+	sdef_module = parseString(sdef_module).toprettyxml()
 
-def pardefs_module_generator():
+def pardefs_module_generator(lexicons_dict = {}):
 	"""The module to generate <pardefs> section"""
 	print("Pardefs module")
 
-def section_module_generator():
+def section_module_generator(root_lexicon_dict = {}):
 	"""The module to generate <section> section"""
 	print("Section module")
 

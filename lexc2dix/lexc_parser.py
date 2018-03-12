@@ -1,4 +1,5 @@
 from parser import lex, yacc
+import dix_generator as dg
 
 def main():
 	"""Main function"""
@@ -40,7 +41,7 @@ def multichar_symbols_formatter(multichar_symbols):
 		except IndexError:
 			m_s_dict[line.split('!')[0].strip().lstrip('%<').rstrip('%>')] = ''
 
-	return m_s_dict
+	dg.sdefs_module_generator(m_s_dict)
 
 def root_lexicon_formatter(root_lexicon):
 	"""The module to process LEXICON Root section"""
