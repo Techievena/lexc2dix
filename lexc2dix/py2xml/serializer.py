@@ -9,8 +9,6 @@ Usage:
     print python_object
     print xml_string
 '''
-from xml.dom.minidom import parseString
-
 class Py2XML():
 
     def __init__( self ):
