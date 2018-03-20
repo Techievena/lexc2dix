@@ -1,4 +1,3 @@
-from dicttoxml import dicttoxml
 from py2xml.serializer import Py2XML
 from xml.dom.minidom import parseString
 

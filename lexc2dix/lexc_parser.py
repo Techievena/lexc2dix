@@ -1,4 +1,3 @@
-from parser import lex, yacc
 import re
 import dix_generator as dg
 
