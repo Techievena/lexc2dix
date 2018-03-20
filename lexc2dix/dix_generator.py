@@ -3,7 +3,7 @@ from py2xml.serializer import Py2XML
 from xml.dom.minidom import parseString
 
 def main():
-	sdefs_module_generator()
+	"""Main function"""
 
 def sdefs_module_generator(multichar_symbols_dict = {}):
 	"""The module to generate <sdefs> section"""
@@ -18,7 +18,10 @@ def sdefs_module_generator(multichar_symbols_dict = {}):
 
 def pardefs_module_generator(lexicons_dict = {}):
 	"""The module to generate <pardefs> section"""
-	print("Pardefs module")
+	lex_list = []
+	lex_list = {'pardefs':lex_list}
+	for key, value in lexicons_dict.items():
+		n_dict = {'n': ""}
 
 def section_module_generator(root_lexicon_dict = {}):
 	"""The module to generate <section> section"""
