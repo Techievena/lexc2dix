@@ -23,13 +23,15 @@ def pardefs_module_generator(lexicons_dict = {}):
 	for key, value in lexicons_dict.items():
 		entry_list = []
 		n_dict = {'n': key, 'es': entry_list}
-		for k, v in value.items():
-			x_string = ''
+		for val in value:
+			obj = {'l': [val['surface']], 'r': ['']}
+			x_string = serializer.parse(obj)
 			ns_dict = {'p':[x_string]}
 			entry_list.append(ns_dict)
 		lex_list.append(n_dict)
 	pardef_module = serializer.parse(lex_dict)
 	pardef_module = pardef_module.replace('<es>', '').replace('</es>', '')
+	pardef_module = parseString(pardef_module).toprettyxml()
 
 def section_module_generator(root_lexicon_dict = {}):
 	"""The module to generate <section> section"""

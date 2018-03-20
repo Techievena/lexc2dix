@@ -60,10 +60,12 @@ def root_lexicon_formatter(root_lexicon):
 	r_l_dict = {}
 	for key, value in root_lexicon.items():
 		section_name = key
+		section_val = []
 		for line in value.splitlines():
 			line = line.strip(';').strip()
-			section_val = re.match(r'(?P<lemma>\w*)(?P<sdef>(%<\w*%>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
-			section_val['sdef'] = section_val['sdef'].replace('%<', '').replace('%>', ' ').strip().split()
+			s_val = re.match(r'(?P<lemma>\w*)(?P<sdef>(%<\w*%>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
+			s_val['sdef'] = s_val['sdef'].replace('%<', '').replace('%>', ' ').strip().split()
+			section_val.append(s_val)
 		r_l_dict[section_name] = section_val
 	dg.section_module_generator(r_l_dict)
 
@@ -72,10 +74,12 @@ def other_lexicons_formatter(other_lexicons):
 	l_dict = {}
 	for key, value in other_lexicons.items():
 		pardef_name = key
+		pardef_val = []
 		for line in value.splitlines():
 			line = line.strip(';').strip()
-			pardef_val = re.match(r'(?P<lemma>\w*)(?P<sdef>(%<\w*%>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
-			pardef_val['sdef'] = pardef_val['sdef'].replace('%<', '').replace('%>', ' ').strip().split()
+			p_val = re.match(r'(?P<lemma>\w*)(?P<sdef>(%<\w*%>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
+			p_val['sdef'] = p_val['sdef'].replace('%<', '').replace('%>', ' ').strip().split()
+			pardef_val.append(p_val)
 		l_dict[pardef_name] = pardef_val
 	dg.pardefs_module_generator(l_dict)
 
