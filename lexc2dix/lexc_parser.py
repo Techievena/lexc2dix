@@ -4,6 +4,7 @@ from lexc2dix.dix_generator import DixGenerator
 def main(nline):
     """Main function"""
     dict_split(nline)
+    D_G.all_module_merger()
 
 def dict_split(fileread):
     """The module to separate multichar symbols and lexicons"""

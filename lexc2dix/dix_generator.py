@@ -32,7 +32,7 @@ class DixGenerator(object):
                     right_entry.append(i_str)
                 obj = {'l': [val['surface']], 'r': right_entry}
                 x_string = self.serializer.parse(obj)
-                ns_dict = {'p':[x_string]}
+                ns_dict = {'p': [x_string]}
                 entry_list.append(ns_dict)
             n_dict = {'n': key, 'es': entry_list}
             lex_list.append(n_dict)
@@ -43,9 +43,22 @@ class DixGenerator(object):
 
     def section_module_generator(self, root_lexicon_dict):
         """The module to generate <section> section"""
-        lex_root_list = []
+        entry_list = []
         for key, value in root_lexicon_dict.items():
-            entry_list = []
+            for val in value:
+                right_entry = [val['lemma']]
+                for item in val['sdef']:
+                    i_obj = {'s': {'n': item}}
+                    i_str = self.serializer.parse(i_obj)
+                    right_entry.append(i_str)
+                obj = {'l': [val['surface']], 'r': right_entry}
+                x_string = self.serializer.parse(obj)
+                ns_dict = {'lm': val['surface'], 'p': [x_string]}
+                entry_list.append(ns_dict)
+        lex_dict = {'es': entry_list}
+        self.section_module = self.serializer.parse(lex_dict)
+        self.section_module = parseString(self.pardef_module).toprettyxml()
+        self.section_module = self.pardef_module.replace('<es>', '<section id=\"main\" type=\"standard\">').replace('</es>', '</section>')
 
     def all_module_merger(self):
         """The module to join all the generated sections to yeild the final dix file"""
