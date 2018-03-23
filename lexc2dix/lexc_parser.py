@@ -1,5 +1,7 @@
-import re, sys
+import regex, sys
 from lexc2dix.dix_generator import DixGenerator
+
+D_G = DixGenerator()
 
 def main(nline):
     """Main function"""
@@ -12,15 +14,16 @@ def dict_split(fileread):
     nline = ""
     for line in fileread.splitlines():
         if not line.startswith('LEXICON'):
-            nline += line
+            nline += (line + '\n')
         else:
             file_module.append(nline)
             nline = ""
-            nline += line
-    m_s = file_module[0]
-    l_p = file_module[1:]
-    multichar_symbols_parser(m_s)
-    lexicons_parser(l_p)
+            nline += (line + '\n')
+    file_module.append(nline)
+    mul_sym = file_module[0]
+    lex_par = file_module[1:]
+    multichar_symbols_parser(mul_sym)
+    lexicons_parser(lex_par)
 
 def multichar_symbols_parser(multichar_symbols):
     """The module to parse Multichar_symbols section"""
@@ -38,12 +41,11 @@ def lexicons_parser(lexicons):
 def multichar_symbols_formatter(multichar_symbols):
     """The module to process Multichar_symbols section"""
     m_s_dict = {}
-    for line in multichar_symbols['Multichar Symbols'].splitlines():
+    for line in multichar_symbols['Multichar_Symbols'].splitlines():
         try:
             m_s_dict[line.split('!')[0].strip().lstrip('%<').rstrip('%>')] = line.split('!')[1].strip()
         except IndexError:
             m_s_dict[line.split('!')[0].strip().lstrip('%<').rstrip('%>')] = ''
-
     D_G.sdefs_module_generator(m_s_dict)
 
 def root_lexicon_separator(lexicons):
@@ -52,9 +54,9 @@ def root_lexicon_separator(lexicons):
     for line in lexicons['Root'].splitlines():
         try:
             r_l_dict[line.split()[-2]] = lexicons[line.split()[-2]]
-        except IndexError:
-            print("Invalid lexicons present!!")
-        del lexicons[line.split()[-2]]
+            del lexicons[line.split()[-2]]
+        except KeyError:
+            print("Invalid lexicons present!!  --->  " + line.split()[-2])
     root_lexicon_formatter(r_l_dict)
     other_lexicons_formatter(lexicons)
 
@@ -66,9 +68,12 @@ def root_lexicon_formatter(root_lexicon):
         section_val = []
         for line in value.splitlines():
             line = line.strip(';').strip()
-            s_val = re.match(r'(?P<lemma>\w*)(?P<sdef>(%<\w*%>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
-            s_val['sdef'] = s_val['sdef'].replace('%<', '').replace('%>', ' ').strip().split()
-            section_val.append(s_val)
+            try:
+                s_val = regex.match(r'(?P<lemma>\w*)(?P<sdef>(%<\w*%>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
+                s_val['sdef'] = s_val['sdef'].replace('%<', '').replace('%>', ' ').strip().split()
+                section_val.append(s_val)
+            except AttributeError:
+                print('Some error in line:\t' + line)
         r_l_dict[section_name] = section_val
     D_G.section_module_generator(r_l_dict)
 
@@ -80,12 +85,14 @@ def other_lexicons_formatter(other_lexicons):
         pardef_val = []
         for line in value.splitlines():
             line = line.strip(';').strip()
-            p_val = re.match(r'(?P<lemma>\w*)(?P<sdef>(%<\w*%>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
-            p_val['sdef'] = p_val['sdef'].replace('%<', '').replace('%>', ' ').strip().split()
-            pardef_val.append(p_val)
+            try:
+                p_val = regex.match(r'(?P<lemma>\w*)(?P<sdef>(%<\w*%>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
+                p_val['sdef'] = p_val['sdef'].replace('%<', '').replace('%>', ' ').strip().split()
+                pardef_val.append(p_val)
+            except AttributeError:
+                print('Some error in line:\t' + line)
         l_dict[pardef_name] = pardef_val
     D_G.pardefs_module_generator(l_dict)
 
 if __name__ == '__main__':
-    D_G = DixGenerator()
     main(sys.argv[1:])

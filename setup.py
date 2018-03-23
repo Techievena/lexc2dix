@@ -37,7 +37,7 @@ if __name__ == "__main__":
         install_requires=required,
         tests_require=test_required,
         long_description=long_description,
-        scripts=['api/lexc2dix_api'],
+        scripts=['api/lexc2dix_api.py'],
         license='GNU GENERAL PUBLIC LICENSE',
         entry_points={
             'console_scripts': [

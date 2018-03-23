@@ -13,11 +13,11 @@ class DixGenerator(object):
         """The module to generate <sdefs> section"""
         m_s_list = []
         for key, value in multichar_symbols_dict.items():
-            n_dict = {'c': value, 'n': key}
+            n_dict = {'n': key, 'c': value}
             m_s_list.append(n_dict)
         m_s_dict = {'sdefs':m_s_list}
         self.sdef_module = self.serializer.parse(m_s_dict)
-        self.sdef_module = parseString(self.sdef_module).toprettyxml()
+        #self.sdef_module = parseString(self.sdef_module).toprettyxml()
 
     def pardefs_module_generator(self, lexicons_dict):
         """The module to generate <pardefs> section"""
@@ -38,7 +38,7 @@ class DixGenerator(object):
             lex_list.append(n_dict)
         lex_dict = {'pardefs':lex_list}
         self.pardef_module = self.serializer.parse(lex_dict)
-        self.pardef_module = parseString(self.pardef_module).toprettyxml()
+        #self.pardef_module = parseString(self.pardef_module).toprettyxml()
         self.pardef_module = self.pardef_module.replace('<es>', '').replace('</es>', '')
 
     def section_module_generator(self, root_lexicon_dict):
@@ -57,8 +57,12 @@ class DixGenerator(object):
                 entry_list.append(ns_dict)
         lex_dict = {'es': entry_list}
         self.section_module = self.serializer.parse(lex_dict)
-        self.section_module = parseString(self.pardef_module).toprettyxml()
+        #self.section_module = parseString(self.pardef_module).toprettyxml()
         self.section_module = self.pardef_module.replace('<es>', '<section id=\"main\" type=\"standard\">').replace('</es>', '</section>')
 
     def all_module_merger(self):
         """The module to join all the generated sections to yeild the final dix file"""
+        dix_file = [self.sdef_module, self.pardef_module, self.section_module]
+        separator = '\n'
+        dix_file = separator.join(dix_file)
+        print(dix_file)

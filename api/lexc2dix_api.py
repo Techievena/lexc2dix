@@ -10,7 +10,7 @@ def main():
     argparser.add_argument("-v", "--version", action="store_true",
                            default=False)
     argparser.add_argument("filename", metavar="filename", type=str,
-                           nargs='+', default=False)
+                           nargs='?', default=False)
 
     args = argparser.parse_args()
     process(args)
@@ -35,7 +35,7 @@ def file_read(filename):
     """Read the dictionary file parsed as arguement"""
     filename = str(filename)
     nline = ""
-    with open('filename', 'r') as lines:
+    with open(filename, 'r') as lines:
         for line in lines:
             nline += (line.rstrip('\n').strip(' ').strip('\t')+'\n') if len(line.rstrip('\n').strip(' ').strip('\t')) else ''
     lines.close()

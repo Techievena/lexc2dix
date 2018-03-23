@@ -4,8 +4,10 @@ __pycache__
 *.sublime-project
 *.sublime-workspace
 *.py.orig
+*.pyc
 .DS_STORE
 .cache
+build/
 dist/
 *.egg-info/
 .idea
