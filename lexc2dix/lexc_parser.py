@@ -1,8 +1,9 @@
-import re
-import lexc2dix.dix_generator as dg
+import re, sys
+from lexc2dix.dix_generator import DixGenerator
 
-def main():
+def main(nline):
     """Main function"""
+    dict_split(nline)
 
 def dict_split(fileread):
     """The module to separate multichar symbols and lexicons"""
@@ -42,7 +43,7 @@ def multichar_symbols_formatter(multichar_symbols):
         except IndexError:
             m_s_dict[line.split('!')[0].strip().lstrip('%<').rstrip('%>')] = ''
 
-    dg.sdefs_module_generator(m_s_dict)
+    D_G.sdefs_module_generator(m_s_dict)
 
 def root_lexicon_separator(lexicons):
     """The module to separate LEXICON Root section"""
@@ -51,7 +52,7 @@ def root_lexicon_separator(lexicons):
         try:
             r_l_dict[line.split()[-2]] = lexicons[line.split()[-2]]
         except IndexError:
-            print("Invalid lexicons present")
+            print("Invalid lexicons present!!")
         del lexicons[line.split()[-2]]
     root_lexicon_formatter(r_l_dict)
     other_lexicons_formatter(lexicons)
@@ -68,7 +69,7 @@ def root_lexicon_formatter(root_lexicon):
             s_val['sdef'] = s_val['sdef'].replace('%<', '').replace('%>', ' ').strip().split()
             section_val.append(s_val)
         r_l_dict[section_name] = section_val
-    dg.section_module_generator(r_l_dict)
+    D_G.section_module_generator(r_l_dict)
 
 def other_lexicons_formatter(other_lexicons):
     """The module to parse other LEXICON sections"""
@@ -82,7 +83,8 @@ def other_lexicons_formatter(other_lexicons):
             p_val['sdef'] = p_val['sdef'].replace('%<', '').replace('%>', ' ').strip().split()
             pardef_val.append(p_val)
         l_dict[pardef_name] = pardef_val
-    dg.pardefs_module_generator(l_dict)
+    D_G.pardefs_module_generator(l_dict)
 
 if __name__ == '__main__':
-    main()
+    D_G = DixGenerator()
+    main(sys.argv[1:])

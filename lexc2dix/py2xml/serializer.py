@@ -10,7 +10,7 @@ Usage:
     print xml_string
 '''
 
-class Py2XML():
+class Py2XML(object):
     def __init__(self):
         self.data = "" # where we store the processed XML string
 
@@ -23,18 +23,18 @@ class Py2XML():
             return ""
 
         if isinstance(python_obj, dict):
-            self.data = self._PyDict2XML(python_obj)
+            self.data = self.PyDict2XML(python_obj)
 
         elif isinstance(python_obj, list):
             # we need name for List object
-            self.data = self._PyList2XML(python_obj, obj_name)
+            self.data = self.PyList2XML(python_obj, obj_name)
 
         else:
             self.data = "<%(n)s>%(o)s</%(n)s>" % {'n':obj_name, 'o':str(python_obj)}
 
         return self.data
 
-    def _PyDict2XML(self, py_dict_obj, obj_name=None):
+    def PyDict2XML(self, py_dict_obj, obj_name=None):
         '''
         process Python Dict objects
         They can store XML attributes and/or children
@@ -44,26 +44,26 @@ class Py2XML():
         attr_str = ""    # attribute string of this level
         child_str = ""   # XML string of this level's children
 
-        for k, v in py_dict_obj.items():
+        for key, value in py_dict_obj.items():
 
-            if isinstance(v, dict):
+            if isinstance(value, dict):
                 # child tags, with attributes
-                child_str += self._PyDict2XML(v, k)
+                child_str += self.PyDict2XML(value, key)
 
-            elif isinstance(v, list):
+            elif isinstance(value, list):
                 # child tags, list of children
-                child_str += self._PyList2XML(v, k)
+                child_str += self.PyList2XML(value, key)
 
             else:
                 # tag could have many attributes, let's save until later
-                attributes.update({k:v})
+                attributes.update({key:value})
 
         if obj_name is None:
             return child_str
 
         # create XML string for attributes
-        for k, v in attributes.items():
-            attr_str += " %s=\"%s\"" % (k, v)
+        for key, value in attributes.items():
+            attr_str += " %s=\"%s\"" % (key, value)
 
         # let's assemble our tag string
         if child_str == "":
@@ -73,7 +73,7 @@ class Py2XML():
 
         return tag_str
 
-    def _PyList2XML(self, py_list_obj, obj_name=None):
+    def PyList2XML(self, py_list_obj, obj_name=None):
         '''
         Process Python List objects
         They have no attributes, just children
@@ -89,7 +89,7 @@ class Py2XML():
                 # eg, persons > person, so cut off last char
                 # name-wise, only really works for one level, however
                 # in practice, this is probably ok
-                child_str += self._PyDict2XML(child_obj, obj_name[:-1])
+                child_str += self.PyDict2XML(child_obj, obj_name[:-1])
             else:
                 for string in child_obj:
                     child_str += string

@@ -7,7 +7,7 @@ def main():
     argparser = argparse.ArgumentParser(description='lexc2dix')
 
     argparser.add_argument("-e", action="store_true", default=False)
-    argparser.add_argument("-V", "--version", action="store_true",
+    argparser.add_argument("-v", "--version", action="store_true",
                            default=False)
     argparser.add_argument("filename", metavar="filename", type=str,
                            nargs='+', default=False)
@@ -39,7 +39,7 @@ def file_read(filename):
         for line in lines:
             nline += (line.rstrip('\n').strip(' ').strip('\t')+'\n') if len(line.rstrip('\n').strip(' ').strip('\t')) else ''
     lines.close()
-    lp.dict_split(nline)
+    lp.main(nline)
 
 if __name__ == '__main__':
     main()
