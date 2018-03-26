@@ -57,6 +57,7 @@ def root_lexicon_separator(lexicons):
             del lexicons[line.split()[-2]]
         except KeyError:
             print("Invalid lexicons present!!  --->  " + line.split()[-2])
+        del lexicons['Root']
     root_lexicon_formatter(r_l_dict)
     other_lexicons_formatter(lexicons)
 
@@ -69,8 +70,11 @@ def root_lexicon_formatter(root_lexicon):
         for line in value.splitlines():
             line = line.strip(';').strip()
             try:
-                s_val = regex.match(r'(?P<lemma>\w*)(?P<sdef>(%<\w*%>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
-                s_val['sdef'] = s_val['sdef'].replace('%<', '').replace('%>', ' ').strip().split()
+                if ':' not in line:
+                    s_val = {'lemma': '', 'sdef': '', 'surface': '', 'paradigm': line}
+                else:
+                    s_val = regex.match(r'(?P<lemma>\w*)(?P<sdef>(%<\w*%>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
+                    s_val['sdef'] = s_val['sdef'].replace('%<', '').replace('%>', ' ').strip().split()
                 section_val.append(s_val)
             except AttributeError:
                 print('Some error in line:\t' + line)
@@ -86,8 +90,11 @@ def other_lexicons_formatter(other_lexicons):
         for line in value.splitlines():
             line = line.strip(';').strip()
             try:
-                p_val = regex.match(r'(?P<lemma>\w*)(?P<sdef>(%<\w*%>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
-                p_val['sdef'] = p_val['sdef'].replace('%<', '').replace('%>', ' ').strip().split()
+                if ':' not in line:
+                    p_val = {'lemma': '', 'sdef': '', 'surface': '', 'paradigm': line}
+                else:
+                    p_val = regex.match(r'(?P<lemma>\w*)(?P<sdef>(%<\w*%>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
+                    p_val['sdef'] = p_val['sdef'].replace('%<', '').replace('%>', ' ').strip().split()
                 pardef_val.append(p_val)
             except AttributeError:
                 print('Some error in line:\t' + line)

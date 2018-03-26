@@ -58,7 +58,7 @@ class DixGenerator(object):
         lex_dict = {'es': entry_list}
         self.section_module = self.serializer.parse(lex_dict)
         #self.section_module = parseString(self.pardef_module).toprettyxml()
-        self.section_module = self.pardef_module.replace('<es>', '<section id=\"main\" type=\"standard\">').replace('</es>', '</section>')
+        self.section_module = self.section_module.replace('<es>', '<section id=\"main\" type=\"standard\">').replace('</es>', '</section>')
 
     def all_module_merger(self):
         """The module to join all the generated sections to yeild the final dix file"""

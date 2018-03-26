@@ -1,8 +1,5 @@
 # lexc2dix
-
-INTRODUCTION
-------------
-A software for converting the existing hfst format to lttoolbox format. It parses over the existing lttoolbox format and generates the corresponding monolingual dictionary in lttoolbox format. It is modular and is user-friendly with proper help message and usage instructions. This was done as a part of coding challenge for the project `Extend lttoolbox to have the power of HFST`.
+A software that parses over the existing lttoolbox format and generates the corresponding monolingual dictionary in lttoolbox format. The package is modular and is user-friendly with proper help message and usage instructions. This was done as a part of coding challenge for the project `Extend lttoolbox to have the power of HFST`.
 
 GETTING STARTED
 ---------------
@@ -56,7 +53,8 @@ CAPABILITIES AND POSSIBILITIES
 The lexc2dix module is expected to function as follows:  
 
 - [x] Parses over the lexc files.
-- [x] Generates the dictionary files.
+- [x] Stores them in form of python dictionaries.
+- [x] Generates the monolingual dictionary files.
 
 CONTRIBUTION
 ------------
@@ -75,4 +73,4 @@ The GNU GENERAL PUBLIC LICENSE - [Abinash Senapati](http://github.com/Techievena
 
 ACKNOWLEDGEMENTS
 ----------------
-I would thank mentors at [Apertium](https://github.com/Apertium) for helping me in development of this package.
+I would like to thank mentors at [Apertium](https://github.com/Apertium) for helping me in the development and maintenance of this package.
