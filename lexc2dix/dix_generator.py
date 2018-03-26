@@ -13,7 +13,7 @@ class DixGenerator(object):
         """The module to generate <sdefs> section"""
         m_s_list = []
         for key, value in multichar_symbols_dict.items():
-            n_dict = {'n': key, 'c': value}
+            n_dict = {'c': value, 'n': key}
             m_s_list.append(n_dict)
         m_s_dict = {'sdefs':m_s_list}
         self.sdef_module = self.serializer.parse(m_s_dict)
@@ -33,7 +33,7 @@ class DixGenerator(object):
                     right_entry.append(i_str)
                 obj = {'l': [val['surface']], 'r': right_entry}
                 x_string = self.serializer.parse(obj)
-                ns_dict = {'p': [x_string]}
+                ns_dict = {'p': [x_string], 'par': {'n': val['paradigm']}}
                 entry_list.append(ns_dict)
             n_dict = {'n': key, 'es': entry_list}
             lex_list.append(n_dict)
@@ -55,7 +55,7 @@ class DixGenerator(object):
                     right_entry.append(i_str)
                 obj = {'l': [val['surface']], 'r': right_entry}
                 x_string = self.serializer.parse(obj)
-                ns_dict = {'lm': val['surface'], 'p': [x_string]}
+                ns_dict = {'lm': val['surface'], 'p': [x_string], 'par': {'n': val['paradigm']}}
                 entry_list.append(ns_dict)
         lex_dict = {'es': entry_list}
         self.section_module = self.serializer.parse(lex_dict)
