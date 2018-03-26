@@ -41,7 +41,13 @@ optional arguments:
   -e
   -v, --version
 
-$ lexc2dix tests/test_files/chv.lexc
+$ lexc2dix tests/test_files/apertium-kaz.kaz.lexc
+```
+
+As the package is currently buggy and can't handle all the entries present in the lexc files we are not writing the results into a dix file, but that be easily done manually with the help of this command:
+
+```
+$ lexc2dix tests/test_files/apertium-kaz.kaz.lexc | tee tests/test_files/apertium-kaz.kaz.dix
 ```
 
 EXTERNAL LIBRARIES USED

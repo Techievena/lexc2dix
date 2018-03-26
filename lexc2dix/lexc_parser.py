@@ -43,21 +43,22 @@ def multichar_symbols_formatter(multichar_symbols):
     m_s_dict = {}
     for line in multichar_symbols['Multichar_Symbols'].splitlines():
         try:
-            m_s_dict[line.split('!')[0].strip().lstrip('%<').rstrip('%>')] = line.split('!')[1].strip()
+            m_s_dict[p_p_v(line.split('!')[0].strip().lstrip('%<').rstrip('%>'))] = p_p_v(line.split('!')[1].strip())
         except IndexError:
-            m_s_dict[line.split('!')[0].strip().lstrip('%<').rstrip('%>')] = ''
+            m_s_dict[p_p_v(line.split('!')[0].strip().lstrip('%<').rstrip('%>'))] = ''
     D_G.sdefs_module_generator(m_s_dict)
 
 def root_lexicon_separator(lexicons):
     """The module to separate LEXICON Root section"""
     r_l_dict = {}
     for line in lexicons['Root'].splitlines():
+        line = line.split('!')[0].strip()
         try:
             r_l_dict[line.split()[-2]] = lexicons[line.split()[-2]]
             del lexicons[line.split()[-2]]
         except KeyError:
             print("Invalid lexicons present!!  --->  " + line.split()[-2])
-        del lexicons['Root']
+    del lexicons['Root']
     root_lexicon_formatter(r_l_dict)
     other_lexicons_formatter(lexicons)
 
@@ -68,6 +69,7 @@ def root_lexicon_formatter(root_lexicon):
         section_name = key
         section_val = []
         for line in value.splitlines():
+            line = line.split('!')[0].strip()
             line = line.strip(';').strip()
             try:
                 if ':' not in line:
@@ -75,6 +77,7 @@ def root_lexicon_formatter(root_lexicon):
                 else:
                     s_val = regex.match(r'(?P<lemma>\w*)(?P<sdef>(%<\w*%>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
                     s_val['sdef'] = s_val['sdef'].replace('%<', '').replace('%>', ' ').strip().split()
+                s_val['paradigm'] = p_p_v(s_val['paradigm'])
                 section_val.append(s_val)
             except AttributeError:
                 print('Some error in line:\t' + line)
@@ -88,6 +91,7 @@ def other_lexicons_formatter(other_lexicons):
         pardef_name = key
         pardef_val = []
         for line in value.splitlines():
+            line = line.split('!')[0].strip()
             line = line.strip(';').strip()
             try:
                 if ':' not in line:
@@ -95,11 +99,17 @@ def other_lexicons_formatter(other_lexicons):
                 else:
                     p_val = regex.match(r'(?P<lemma>\w*)(?P<sdef>(%<\w*%>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
                     p_val['sdef'] = p_val['sdef'].replace('%<', '').replace('%>', ' ').strip().split()
+                p_val['paradigm'] = p_p_v(p_val['paradigm'])
                 pardef_val.append(p_val)
             except AttributeError:
                 print('Some error in line:\t' + line)
         l_dict[pardef_name] = pardef_val
     D_G.pardefs_module_generator(l_dict)
+
+def p_p_v(string_val):
+    """Module to enable pretty print validation of dictionary"""
+    string_val = string_val.replace('"', '').replace('<', '').replace('>', '')
+    return string_val
 
 if __name__ == '__main__':
     main(sys.argv[1:])

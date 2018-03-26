@@ -37,7 +37,8 @@ def file_read(filename):
     nline = ""
     with open(filename, 'r') as lines:
         for line in lines:
-            nline += (line.rstrip('\n').strip(' ').strip('\t')+'\n') if len(line.rstrip('\n').strip(' ').strip('\t')) else ''
+            line = line.rstrip('\n').strip(' ').strip('\t')
+            nline += (line+'\n') if (len(line) and not line.startswith('!')) else ''
     lines.close()
     lp.main(nline)
 
