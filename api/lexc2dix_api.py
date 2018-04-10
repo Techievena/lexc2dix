@@ -29,7 +29,14 @@ def process(args):
 
 def detailed_usage():
     """Detailed documentation of lexc2dix."""
-    print("Welcome to the detailed documentation of lexc2dix !")
+    print("A software that parses over the existing lttoolbox format and generates the " +
+          "corresponding monolingual dictionary in lttoolbox format. The package is modular and " +
+          "is user-friendly with proper help message and usage instructions. \nThis was done as a " +
+          "part of coding challenge for the project `Extend lttoolbox to have the power of HFST`." +
+          "\n\nUSAGE INSTRUCTIONS:\n\n" +
+          "\t$ lexc2dix tests/test_files/apertium-kaz.kaz.lexc\n\n" +
+          "For printing results to a file execute the command,\n\n" +
+          "\t$ lexc2dix tests/test_files/apertium-kaz.kaz.lexc | tee tests/test_files/apertium-kaz.kaz.dix\n")
 
 def file_read(filename):
     """Read the dictionary file parsed as arguement"""

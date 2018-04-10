@@ -13,7 +13,7 @@ from lexc2dix import release
 os.listdir(os.path.join('lexc2dix'))
 
 if sys.argv[-1] == 'setup.py':
-    print('To install, run \'python setup.py install\'')
+    print('To install, run \'python3 setup.py install\'')
     print()
 
 with open('requirements.txt') as requirements:
