@@ -13,6 +13,7 @@ def dict_split(fileread):
     file_module = []
     nline = ""
     for line in fileread.splitlines():
+        line = line.replace('%', '')
         if not line.startswith('LEXICON'):
             nline += (line + '\n')
         else:
@@ -43,9 +44,9 @@ def multichar_symbols_formatter(multichar_symbols):
     m_s_dict = {}
     for line in multichar_symbols['Multichar_Symbols'].splitlines():
         try:
-            m_s_dict[p_p_v(line.split('!')[0].strip().lstrip('%<').rstrip('%>'))] = p_p_v(line.split('!')[1].strip())
+            m_s_dict[line.split('!')[0].strip().lstrip('<').rstrip('>')] = line.split('!')[1].strip()
         except IndexError:
-            m_s_dict[p_p_v(line.split('!')[0].strip().lstrip('%<').rstrip('%>'))] = ''
+            m_s_dict[line.split('!')[0].strip().lstrip('<').rstrip('>')] = ''
     D_G.sdefs_module_generator(m_s_dict)
 
 def root_lexicon_separator(lexicons):
@@ -75,9 +76,8 @@ def root_lexicon_formatter(root_lexicon):
                 if ':' not in line:
                     s_val = {'lemma': '', 'sdef': '', 'surface': '', 'paradigm': line}
                 else:
-                    s_val = regex.match(r'(?P<lemma>\w*)(?P<sdef>(%<\w*%>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
-                    s_val['sdef'] = s_val['sdef'].replace('%<', '').replace('%>', ' ').strip().split()
-                s_val['paradigm'] = p_p_v(s_val['paradigm'])
+                    s_val = regex.match(r'(?P<lemma>\w*)(?P<sdef>(<\w*>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
+                    s_val['sdef'] = s_val['sdef'].replace('<', '').replace('>', ' ').strip().split()
                 section_val.append(s_val)
             except AttributeError:
                 print('Some error in line:\t' + line)
@@ -97,19 +97,13 @@ def other_lexicons_formatter(other_lexicons):
                 if ':' not in line:
                     p_val = {'lemma': '', 'sdef': '', 'surface': '', 'paradigm': line}
                 else:
-                    p_val = regex.match(r'(?P<lemma>\w*)(?P<sdef>(%<\w*%>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
-                    p_val['sdef'] = p_val['sdef'].replace('%<', '').replace('%>', ' ').strip().split()
-                p_val['paradigm'] = p_p_v(p_val['paradigm'])
+                    p_val = regex.match(r'(?P<lemma>\w*)(?P<sdef>(<\w*>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
+                    p_val['sdef'] = p_val['sdef'].replace('<', '').replace('>', ' ').strip().split()
                 pardef_val.append(p_val)
             except AttributeError:
                 print('Some error in line:\t' + line)
         l_dict[pardef_name] = pardef_val
     D_G.pardefs_module_generator(l_dict)
-
-def p_p_v(string_val):
-    """Module to enable pretty print validation of dictionary"""
-    string_val = string_val.replace('"', '').replace('<', '').replace('>', '')
-    return string_val
 
 if __name__ == '__main__':
     main(sys.argv[1:])

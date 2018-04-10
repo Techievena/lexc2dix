@@ -1,6 +1,15 @@
 from xml.dom.minidom import parseString
 from lexc2dix.py2xml.serializer import Py2XML
 
+def escape_xml(string_val):
+    """Module to escape the characters used in the dictionary for xml format validation"""
+    string_val = string_val.replace('&', '&amp;')
+    string_val = string_val.replace('"', '&quot;')
+    string_val = string_val.replace('<', '&lt;')
+    string_val = string_val.replace('>', '&gt;')
+    string_val = string_val.replace("'", '&apos;')
+    return string_val
+
 class DixGenerator(object):
     """docstring for dix_generator"""
     def __init__(self):
@@ -13,7 +22,7 @@ class DixGenerator(object):
         """The module to generate <sdefs> section"""
         m_s_list = []
         for key, value in multichar_symbols_dict.items():
-            n_dict = {'c': value, 'n': key}
+            n_dict = {'c': escape_xml(value), 'n': escape_xml(key)}
             m_s_list.append(n_dict)
         m_s_dict = {'sdefs':m_s_list}
         self.sdef_module = self.serializer.parse(m_s_dict)
@@ -26,16 +35,16 @@ class DixGenerator(object):
         for key, value in lexicons_dict.items():
             entry_list = []
             for val in value:
-                right_entry = [val['lemma']]
+                right_entry = [escape_xml(val['lemma'])]
                 for item in val['sdef']:
-                    i_obj = {'s': {'n': item}}
+                    i_obj = {'s': {'n': escape_xml(item)}}
                     i_str = self.serializer.parse(i_obj)
                     right_entry.append(i_str)
-                obj = {'l': [val['surface']], 'r': right_entry}
+                obj = {'l': [escape_xml(val['surface'])], 'r': right_entry}
                 x_string = self.serializer.parse(obj)
-                ns_dict = {'p': [x_string], 'par': {'n': val['paradigm']}}
+                ns_dict = {'p': [x_string], 'par': {'n': escape_xml(val['paradigm'])}}
                 entry_list.append(ns_dict)
-            n_dict = {'n': key, 'es': entry_list}
+            n_dict = {'n': escape_xml(key), 'es': entry_list}
             lex_list.append(n_dict)
         lex_dict = {'pardefs':lex_list}
         self.pardef_module = self.serializer.parse(lex_dict)
@@ -48,14 +57,14 @@ class DixGenerator(object):
         entry_list = []
         for key, value in root_lexicon_dict.items():
             for val in value:
-                right_entry = [val['lemma']]
+                right_entry = [escape_xml(val['lemma'])]
                 for item in val['sdef']:
-                    i_obj = {'s': {'n': item}}
+                    i_obj = {'s': {'n': escape_xml(item)}}
                     i_str = self.serializer.parse(i_obj)
                     right_entry.append(i_str)
-                obj = {'l': [val['surface']], 'r': right_entry}
+                obj = {'l': [escape_xml(val['surface'])], 'r': right_entry}
                 x_string = self.serializer.parse(obj)
-                ns_dict = {'lm': val['surface'], 'p': [x_string], 'par': {'n': val['paradigm']}}
+                ns_dict = {'lm': escape_xml(val['surface']), 'p': [x_string], 'par': {'n': escape_xml(val['paradigm'])}}
                 entry_list.append(ns_dict)
         lex_dict = {'es': entry_list}
         self.section_module = self.serializer.parse(lex_dict)
