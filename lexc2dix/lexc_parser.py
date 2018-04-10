@@ -76,8 +76,21 @@ def root_lexicon_formatter(root_lexicon):
                 if ':' not in line:
                     s_val = {'lemma': '', 'sdef': '', 'surface': '', 'paradigm': line}
                 else:
-                    s_val = regex.match(r'(?P<lemma>\w*)(?P<sdef>(<\w*>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
+                    try:
+                        s_val = regex.match(r'(?P<lemma>[^<])(?P<sdef>(<\w*>)*)', line.split(':')[0]).groupdict()
+                    except AttributeError:
+                        s_val = regex.match(r'(?P<sdef>(<\w*>)*)', line.split(':')[0]).groupdict()
+                        s_val['lemma'] = ''
                     s_val['sdef'] = s_val['sdef'].replace('<', '').replace('>', ' ').strip().split()
+                    s_ele = line.split(':')[1].rpartition(' ')
+                    if s_ele[1] == '':
+                        s_val['surface'] = s_ele[2]
+                        s_val['paradigm'] = s_ele[0]
+                    else:
+                        s_val['surface'] = s_ele[0]
+                        s_val['paradigm'] = s_ele[2]
+                    if s_val['paradigm'] == '#':
+                        s_val['paradigm'] = ''
                 section_val.append(s_val)
             except AttributeError:
                 print('Some error in line:\t' + line)
@@ -97,8 +110,21 @@ def other_lexicons_formatter(other_lexicons):
                 if ':' not in line:
                     p_val = {'lemma': '', 'sdef': '', 'surface': '', 'paradigm': line}
                 else:
-                    p_val = regex.match(r'(?P<lemma>\w*)(?P<sdef>(<\w*>)*):(?P<surface>\w*) (?P<paradigm>\w*)', line).groupdict()
+                    try:
+                        p_val = regex.match(r'(?P<lemma>[^<])(?P<sdef>(<\w*>)*)', line.split(':')[0]).groupdict()
+                    except AttributeError:
+                        p_val = regex.match(r'(?P<sdef>(<\w*>)*)', line.split(':')[0]).groupdict()
+                        p_val['lemma'] = ''
                     p_val['sdef'] = p_val['sdef'].replace('<', '').replace('>', ' ').strip().split()
+                    p_ele = line.split(':')[1].rpartition(' ')
+                    if p_ele[1] == '':
+                        p_val['surface'] = p_ele[2]
+                        p_val['paradigm'] = p_ele[0]
+                    else:
+                        p_val['surface'] = p_ele[0]
+                        p_val['paradigm'] = p_ele[2]
+                    if p_val['paradigm'] == '#':
+                        p_val['paradigm'] = ''
                 pardef_val.append(p_val)
             except AttributeError:
                 print('Some error in line:\t' + line)
