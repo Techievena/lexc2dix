@@ -22,7 +22,10 @@ class DixGenerator(object):
         """The module to generate <sdefs> section"""
         m_s_list = []
         for key, value in multichar_symbols_dict.items():
-            n_dict = {'c': escape_xml(value), 'n': escape_xml(key)}
+            if not value:
+                n_dict = {'n': escape_xml(key)}
+            else:
+                n_dict = {'n': escape_xml(key), 'c': escape_xml(value)}
             m_s_list.append(n_dict)
         m_s_dict = {'sdefs':m_s_list}
         self.sdef_module = self.serializer.parse(m_s_dict)
@@ -35,15 +38,37 @@ class DixGenerator(object):
         for key, value in lexicons_dict.items():
             entry_list = []
             for val in value:
-                right_entry = [escape_xml(val['lemma'])]
+                if not val['lemma']:
+                    right_entry = []
+                else:
+                    right_entry = [escape_xml(val['lemma'])]
                 for item in val['sdef']:
                     i_obj = {'s': {'n': escape_xml(item)}}
                     i_str = self.serializer.parse(i_obj)
                     right_entry.append(i_str)
-                obj = {'l': [escape_xml(val['surface'])], 'r': right_entry}
-                x_string = self.serializer.parse(obj)
-                ns_dict = {'p': [x_string], 'par': {'n': escape_xml(val['paradigm'])}}
-                entry_list.append(ns_dict)
+
+                if not val['surface'] and not right_entry:
+                    obj = None
+                elif not val['surface']:
+                    obj = {'r': right_entry}
+                elif not right_entry:
+                    obj = {'l': [escape_xml(val['surface'])]}
+                else:
+                    obj = {'l': [escape_xml(val['surface'])], 'r': right_entry}
+
+                x_string = self.serializer.parse(obj) if obj is not None else None
+
+                if x_string is None and not val['paradigm']:
+                    ns_dict = None
+                elif x_string is None:
+                    ns_dict = {'par': {'n': escape_xml(val['paradigm'])}}
+                elif not val['paradigm']:
+                    ns_dict = {'p': [x_string]}
+                else:
+                    ns_dict = {'p': [x_string], 'par': {'n': escape_xml(val['paradigm'])}}
+
+                if ns_dict is not None:
+                    entry_list.append(ns_dict)
             n_dict = {'n': escape_xml(key), 'es': entry_list}
             lex_list.append(n_dict)
         lex_dict = {'pardefs':lex_list}
@@ -57,15 +82,37 @@ class DixGenerator(object):
         entry_list = []
         for key, value in root_lexicon_dict.items():
             for val in value:
-                right_entry = [escape_xml(val['lemma'])]
+                if not val['lemma']:
+                    right_entry = []
+                else:
+                    right_entry = [escape_xml(val['lemma'])]
                 for item in val['sdef']:
                     i_obj = {'s': {'n': escape_xml(item)}}
                     i_str = self.serializer.parse(i_obj)
                     right_entry.append(i_str)
-                obj = {'l': [escape_xml(val['surface'])], 'r': right_entry}
-                x_string = self.serializer.parse(obj)
-                ns_dict = {'lm': escape_xml(val['surface']), 'p': [x_string], 'par': {'n': escape_xml(val['paradigm'])}}
-                entry_list.append(ns_dict)
+
+                if not val['surface'] and not right_entry:
+                    obj = None
+                elif not val['surface']:
+                    obj = {'r': right_entry}
+                elif not right_entry:
+                    obj = {'l': [escape_xml(val['surface'])]}
+                else:
+                    obj = {'l': [escape_xml(val['surface'])], 'r': right_entry}
+
+                x_string = self.serializer.parse(obj) if obj is not None else None
+
+                if x_string is None and not val['paradigm']:
+                    ns_dict = None
+                elif x_string is None:
+                    ns_dict = {'lm': escape_xml(val['surface']), 'par': {'n': escape_xml(val['paradigm'])}}
+                elif not val['paradigm']:
+                    ns_dict = {'lm': escape_xml(val['surface']), 'p': [x_string]}
+                else:
+                    ns_dict = {'lm': escape_xml(val['surface']), 'p': [x_string], 'par': {'n': escape_xml(val['paradigm'])}}
+
+                if ns_dict is not None:
+                    entry_list.append(ns_dict)
         lex_dict = {'es': entry_list}
         self.section_module = self.serializer.parse(lex_dict)
         self.section_module = parseString(self.section_module).toprettyxml()
