@@ -34,9 +34,7 @@ def detailed_usage():
           "is user-friendly with proper help message and usage instructions. \nThis was done as a " +
           "part of coding challenge for the project `Extend lttoolbox to have the power of HFST`." +
           "\n\nUSAGE INSTRUCTIONS:\n\n" +
-          "\t$ lexc2dix tests/test_files/apertium-kaz.kaz.lexc\n\n" +
-          "For printing results to a file execute the command,\n\n" +
-          "\t$ lexc2dix tests/test_files/apertium-kaz.kaz.lexc | tee tests/test_files/apertium-kaz.kaz.dix\n")
+          "\t$ lexc2dix tests/test_files/apertium-kaz.kaz.lexc\n")
 
 def file_read(filename):
     """Read the dictionary file parsed as arguement"""
@@ -47,7 +45,8 @@ def file_read(filename):
             line = line.rstrip('\n').strip(' ').strip('\t')
             nline += (line+'\n') if (len(line) and not line.startswith('!')) else ''
     lines.close()
-    lp.main(nline)
+    filename = filename[:-4] + 'dix'
+    lp.main(nline, filename)
 
 if __name__ == '__main__':
     main()

@@ -1,6 +1,20 @@
 # lexc2dix
 A software that parses over the existing lttoolbox format and generates the corresponding monolingual dictionary in lttoolbox format. The package is modular and is user-friendly with proper help message and usage instructions. This was done as a part of coding challenge for the project `Extend lttoolbox to have the power of HFST`.
 
+INSTALLATION
+------------
+If you are a user and are simply looking to install the package, just type the command given below in your terminal window.  
+
+```
+$ pip3 install lexc2dix
+```
+
+To get proper usage instructions for the package, type the command given below.
+
+```
+$ lexc2dix -e
+```
+
 GETTING STARTED
 ---------------
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
@@ -44,12 +58,6 @@ optional arguments:
 $ lexc2dix tests/test_files/apertium-kaz.kaz.lexc
 ```
 
-As the package is currently buggy and can't handle all the entries present in the lexc files we are not writing the results into a dix file, but that be easily done manually with the help of this command:
-
-```
-$ lexc2dix tests/test_files/apertium-kaz.kaz.lexc | tee tests/test_files/apertium-kaz.kaz.dix
-```
-
 EXTERNAL LIBRARIES USED
 -----------------------
 * regex 2018.02.21 (Python 3)
@@ -79,4 +87,4 @@ The GNU GENERAL PUBLIC LICENSE - [Abinash Senapati](http://github.com/Techievena
 
 ACKNOWLEDGEMENTS
 ----------------
-I would like to thank mentors at [Apertium](https://github.com/Apertium) for helping me in the development and maintenance of this package.
+I would like to thank mentors at [Apertium](https://github.com/Apertium) for helping me with the development and maintenance of this package.

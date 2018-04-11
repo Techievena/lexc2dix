@@ -11,7 +11,8 @@ def escape_xml(string_val):
     return string_val
 
 class DixGenerator(object):
-    """docstring for dix_generator"""
+    """The class for generating dix file from the dictionaries constructed after parsing
+    through the lexc files."""
     def __init__(self):
         self.serializer = Py2XML()
         self.sdef_module = ""
@@ -119,9 +120,11 @@ class DixGenerator(object):
         self.section_module = self.section_module.replace('<es>', '<section id=\"main\" type=\"standard\">').replace('</es>', '</section>')
         self.section_module = self.section_module.split('\n', 1)[1]
 
-    def all_module_merger(self):
+    def all_module_merger(self, filename):
         """The module to join all the generated sections to yeild the final dix file"""
         dix_file = [self.sdef_module, self.pardef_module, self.section_module]
         separator = '\n'
         dix_file = separator.join(dix_file)
-        print(dix_file)
+        with open(filename, 'w+') as d_file:
+            d_file.write(dix_file)
+        d_file.close()

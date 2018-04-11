@@ -3,10 +3,10 @@ from lexc2dix.dix_generator import DixGenerator
 
 D_G = DixGenerator()
 
-def main(nline):
+def main(nline, filename):
     """Main function"""
     dict_split(nline)
-    D_G.all_module_merger()
+    D_G.all_module_merger(filename)
 
 def dict_split(fileread):
     """The module to separate multichar symbols and lexicons"""
