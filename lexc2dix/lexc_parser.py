@@ -77,7 +77,7 @@ def root_lexicon_formatter(root_lexicon):
                     s_val = {'lemma': '', 'sdef': '', 'surface': '', 'paradigm': line}
                 else:
                     try:
-                        s_val = regex.match(r'(?P<lemma>[^<])(?P<sdef>(<\w*>)*)', line.split(':')[0]).groupdict()
+                        s_val = regex.match(r'(?P<lemma>([^<])*)(?P<sdef>(<\w*>)*)', line.split(':')[0]).groupdict()
                     except AttributeError:
                         s_val = regex.match(r'(?P<sdef>(<\w*>)*)', line.split(':')[0]).groupdict()
                         s_val['lemma'] = ''
@@ -111,7 +111,7 @@ def other_lexicons_formatter(other_lexicons):
                     p_val = {'lemma': '', 'sdef': '', 'surface': '', 'paradigm': line}
                 else:
                     try:
-                        p_val = regex.match(r'(?P<lemma>[^<])(?P<sdef>(<\w*>)*)', line.split(':')[0]).groupdict()
+                        p_val = regex.match(r'(?P<lemma>([^<])*)(?P<sdef>(<\w*>)*)', line.split(':')[0]).groupdict()
                     except AttributeError:
                         p_val = regex.match(r'(?P<sdef>(<\w*>)*)', line.split(':')[0]).groupdict()
                         p_val['lemma'] = ''

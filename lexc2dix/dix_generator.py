@@ -42,7 +42,7 @@ class DixGenerator(object):
                 if not val['lemma']:
                     right_entry = []
                 else:
-                    right_entry = [escape_xml(val['lemma'])]
+                    right_entry = [escape_xml(val['lemma']).replace(' ', '<b/>')]
                 for item in val['sdef']:
                     i_obj = {'s': {'n': escape_xml(item)}}
                     i_str = self.serializer.parse(i_obj)
@@ -53,9 +53,9 @@ class DixGenerator(object):
                 elif not val['surface']:
                     obj = {'r': right_entry}
                 elif not right_entry:
-                    obj = {'l': [escape_xml(val['surface'])]}
+                    obj = {'l': [escape_xml(val['surface']).replace(' ', '<b/>')]}
                 else:
-                    obj = {'l': [escape_xml(val['surface'])], 'r': right_entry}
+                    obj = {'l': [escape_xml(val['surface']).replace(' ', '<b/>')], 'r': right_entry}
 
                 x_string = self.serializer.parse(obj) if obj is not None else None
 
@@ -86,7 +86,7 @@ class DixGenerator(object):
                 if not val['lemma']:
                     right_entry = []
                 else:
-                    right_entry = [escape_xml(val['lemma'])]
+                    right_entry = [escape_xml(val['lemma']).replace(' ', '<b/>')]
                 for item in val['sdef']:
                     i_obj = {'s': {'n': escape_xml(item)}}
                     i_str = self.serializer.parse(i_obj)
@@ -97,9 +97,9 @@ class DixGenerator(object):
                 elif not val['surface']:
                     obj = {'r': right_entry}
                 elif not right_entry:
-                    obj = {'l': [escape_xml(val['surface'])]}
+                    obj = {'l': [escape_xml(val['surface']).replace(' ', '<b/>')]}
                 else:
-                    obj = {'l': [escape_xml(val['surface'])], 'r': right_entry}
+                    obj = {'l': [escape_xml(val['surface']).replace(' ', '<b/>')], 'r': right_entry}
 
                 x_string = self.serializer.parse(obj) if obj is not None else None
 
